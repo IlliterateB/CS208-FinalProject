@@ -2,8 +2,11 @@ CREATE DATABASE IF NOT EXISTS cs208demo;
 
 USE cs208demo;
 
-CREATE TABLE IF NOT EXISTS todos (
+CREATE TABLE IF NOT EXISTS comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    task VARCHAR(255) NOT NULL,
-    completed BOOLEAN DEFAULT FALSE
+    body VARCHAR(500) NOT NULL,
+    written DATETIME DEFAULT NOW()
 );
+
+INSERT INTO comments(body)
+VALUE ("hello, this is the initial comment to test");
