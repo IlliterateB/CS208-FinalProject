@@ -1,11 +1,12 @@
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
-  padding: 15px;
+  padding: 60px 15px 15px 15px;
   font: 14px "Montserrat", serif;
+  background-color: #F7F7F7;
 }
 
 a {
@@ -16,4 +17,33 @@ a {
   display: flex;
   gap: 10px;
   justify-content: center;
+}
+
+header {
+  background-color: #10291D;
+  position: fixed;
+  top: 0;
+  font-size: 32px;
+  left: 0;
+  text-align: center;
+  width: 100vw;
+  height: calc(11vmin * 0.802);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0 15px;
+  color: #F7F7F7;
+  font-weight: bold;
+  border-bottom: 2px solid #F7C64A;
+}
+
+.logo {
+  width: 15vmin;
+  height: calc(11vmin * 0.802);
+  min-height: 50px;
+  min-width: 75px;
+  padding-top: 5px;
+  transition: width 0.3s ease, height 0.3s ease;
 }

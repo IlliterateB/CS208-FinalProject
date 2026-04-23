@@ -1,8 +1,7 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Welcome to #{title}
   ol
   each val in comments
     li
@@ -28,8 +27,4 @@ block content
       label(for='order') Place an Order:
       button(type='submit') Order
 
-  //- h2 Add a new task
-  //- form(method='POST' action='/create')
-  //-   label(for='task') Task:
-  //-   input(type='text', name='task', id='task', required)
-  //-   button(type='submit') Create Task
+  
