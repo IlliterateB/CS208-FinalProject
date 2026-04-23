@@ -33,7 +33,6 @@ header {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 0 15px;
   color: #F7F7F7;
   font-weight: bold;
   border-bottom: 2px solid #F7C64A;
@@ -46,4 +45,16 @@ header {
   min-width: 75px;
   padding-top: 5px;
   transition: width 0.3s ease, height 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  header {
+    height: calc(23vmin * 0.85);
+    min-height: 64px;
+  }
+
+  .logo {
+    width: 28vmin;
+    height: calc(23vmin * 0.802);
+  }
 }
