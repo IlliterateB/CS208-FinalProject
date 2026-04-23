@@ -1,0 +1,15 @@
+extends layout 
+
+block content
+  h1 Menu
+  
+  .button-group
+    form(method='GET' action='/')
+      label(for='menu') Go to Home Page:
+      button(type='submit')  Home
+    form(method='GET' action='/about')
+      label(for='about') About Us:
+      button(type='submit') About
+    form(method='GET' action='/order')
+      label(for='order') Place an Order:
+      button(type='submit') Order

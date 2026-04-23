@@ -6,7 +6,7 @@ block content
   ol
   each val in comments
     li
-      span= val.body + ' - '
+      span= val.body 
       //- if val.completed > 0
       //-   span Completed
       //- else
@@ -15,8 +15,19 @@ block content
       //-   input(type='hidden', name='id', value=val.id)
       //-   button(type='submit') Delete
 
-  form(method='GET' action='/menu')
+  
   hr
+  .button-group
+    form(method='GET' action='/menu')
+      label(for='menu') View Menu:
+      button(type='submit')  Menu
+    form(method='GET' action='/about')
+      label(for='about') About Us:
+      button(type='submit') About
+    form(method='GET' action='/order')
+      label(for='order') Place an Order:
+      button(type='submit') Order
+
   //- h2 Add a new task
   //- form(method='POST' action='/create')
   //-   label(for='task') Task:

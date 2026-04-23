@@ -28,6 +28,21 @@ router.get('/', function(req, res, next){
   }
 });
 
+
+// GET menu page
+router.get('/menu', function(req, res) {
+  try {
+    res.render('menu', { title: 'Menu' });
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+    res.status(500).send('Error fetching menu items');
+  }
+});
+
+
+
+
+
 // router.post('/create', function (req, res, next) {
 //     const { task } = req.body;
 //     try {
