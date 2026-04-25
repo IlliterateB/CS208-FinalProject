@@ -2,19 +2,7 @@ extends layout
 
 block content
   h1 Welcome to #{title}
-  ol
-  each val in comments
-    li
-      span= val.body 
-      //- if val.completed > 0
-      //-   span Completed
-      //- else
-      //-   span Not Completed
-      //- form(method='POST' action='/delete')
-      //-   input(type='hidden', name='id', value=val.id)
-      //-   button(type='submit') Delete
-
-  
+  p Explore our delicious menu, learn about our business, and place your order today!
   hr
   .button-group
     form(method='GET' action='/menu')
@@ -26,5 +14,33 @@ block content
     form(method='GET' action='/order')
       label(for='order') Place an Order:
       button(type='submit') Order
+
+  hr 
+
+  form#submit-comment(action="/submit-comment" method="POST")
+    label(for="user-comment") Leave a comment:
+    br
+    textarea#user-comment(
+      name="comment" 
+      rows="4" 
+      cols="50" 
+      placeholder="Type your thoughts here..." 
+      required
+    )
+    br
+    input(type="submit" value="Submit")
+
+  ol
+  each val in comments
+    li
+      span= val.body 
+      span= " - " + val.written
+      //- if val.completed > 0
+      //-   span Completed
+      //- else
+      //-   span Not Completed
+      //- form(method='POST' action='/delete')
+      //-   input(type='hidden', name='id', value=val.id)
+      //-   button(type='submit') Delete
 
   

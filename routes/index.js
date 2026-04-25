@@ -39,9 +39,30 @@ router.get('/menu', function(req, res) {
   }
 });
 
+// GET about page
 
 
+// GET order page
 
+
+// POST create comment
+router.post('/submit-comment', function (req, res, next) {
+    const { comment } = req.body;
+    try {
+      req.db.query('INSERT INTO comments (body) VALUES (?);', [comment], (err, results) => {
+        if (err) {
+          console.error('Error adding comment:', err);
+          return res.status(500).send('Error adding comment');
+        }
+        console.log('Comment added successfully:', results);
+        // Redirect to the home page after adding
+        res.redirect('/');
+      });
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      res.status(500).send('Error adding comment');
+    }
+});
 
 // router.post('/create', function (req, res, next) {
 //     const { task } = req.body;

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS comments (
     written DATETIME DEFAULT NOW()
 );
 
-TRUNCATE TABLE comments;
+-- TRUNCATE TABLE comments;
 
 INSERT INTO comments(body)
-VALUE ("hello, this is the initial comment to test");
+VALUES ("hello, this is the initial comment to test");
