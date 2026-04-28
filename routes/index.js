@@ -45,7 +45,9 @@ router.get('/about', function(req, res) {
 });
 
 // GET order page
-
+router.get('/order', function(req, res) {
+  res.render('order', { title: 'Order Donuts' });
+});
 
 // POST create comment
 router.post('/submit-comment', function (req, res, next) {

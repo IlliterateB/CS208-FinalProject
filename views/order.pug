@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+    h1 Order our Donuts here!
+    p Please use your favorite ordering service below.
+
+    block doordash logo
+    a(href='https://www.doordash.com/' alt='General Link to DoorDash' style='padding-top: 20px;') 
+        img(src='/images/Doordash.png', alt='DoorDash Logo', class='logo') 
+        br
+        | Order on DoorDash
+        
+    
+    block ubereats logo
+    a(href='https://www.ubereats.com/store' alt='General Link to Uber Eats' style='padding-top: 20px;') 
+        img(src='/images/UberEats.png', alt='Uber Eats Logo', class='logo')
+        br
+        | Order on Uber Eats
