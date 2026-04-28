@@ -4,6 +4,17 @@ block content
     h1 Order our Donuts here!
     p Please use your favorite ordering service below.
 
+    .button-group 
+        form(method='GET' action='/')
+            label(for='home') Go to Home Page:
+            button(type='submit')  Home
+        form(method='GET' action='/menu')
+            label(for='menu') View Menu:
+            button(type='submit')  Menu
+        form(method='GET' action='/about')
+            label(for='about') About Us:
+            button(type='submit') About
+
     block doordash logo
     a(href='https://www.doordash.com/' alt='General Link to DoorDash' style='padding-top: 20px;') 
         img(src='/images/Doordash.png', alt='DoorDash Logo', class='logo') 

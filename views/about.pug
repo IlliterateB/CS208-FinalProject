@@ -4,3 +4,15 @@ block content
     h1 About Us 
     p Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
     p   Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+
+
+    .button-group
+      form(method='GET' action='/')
+        label(for='home') Go to Home Page:
+        button(type='submit')  Home
+      form(method='GET' action='/menu')
+        label(for='menu') View Menu:
+        button(type='submit')  Menu
+      form(method='GET' action='/order')
+        label(for='order') Place an Order:
+        button(type='submit') Order 

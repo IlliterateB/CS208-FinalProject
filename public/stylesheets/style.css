@@ -21,7 +21,11 @@ em {
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin-bottom: 10vh;
+  margin-bottom: 2vh;
+}
+
+#submit-comment{
+  margin-top: 8vh;
 }
 
 .comments-container {
@@ -30,7 +34,7 @@ em {
   align-items: center;
   width: 100%;
   max-width: 600px;
-  margin: 20px 0;
+  margin-top: 20px;
 }
 
 header {
