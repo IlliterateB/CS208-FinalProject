@@ -15,7 +15,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next){
   try {
-    const limit = parseInt(req.query.limit) || 10; // Default to 10 if no limit is provided
+    const limit = parseInt(req.query.limit) || 9; // Default to 0-9 if no limit is provided
     const offset = parseInt(req.query.offset) || 0; // Default to 0 if no offset is provided
     req.db.query('SELECT * FROM comments ORDER BY id DESC LIMIT ? OFFSET ?;', [limit, offset], (err, results) => {
       if (err) {
@@ -85,7 +85,7 @@ router.post('/submit-comment', function (req, res, next) {
 // New route for AJAX loading of comments (returns JSON)
 router.get('/comments', function(req, res, next) {
   try {
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 9; // Default to 0-9 if no limit is provided
     const offset = parseInt(req.query.offset) || 0;
     req.db.query('SELECT * FROM comments ORDER BY id DESC LIMIT ? OFFSET ?;', [limit, offset], (err, results) => {
       if (err) {

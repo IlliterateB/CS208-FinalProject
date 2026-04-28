@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS comments (
 
 -- TRUNCATE TABLE comments;
 
-INSERT INTO comments(body)
-VALUES ("hello, this is the initial comment to test,
- and it comments each time the website is set up from the codespace.");
+-- INSERT INTO comments(body)
+-- VALUES ("hello, this is the initial comment to test,
+--  and it comments each time the website is set up from the codespace.");
