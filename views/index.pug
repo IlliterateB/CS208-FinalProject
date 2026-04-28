@@ -30,18 +30,39 @@ block content
     )
     br
     input(type="submit" value="Submit")
-
-  ol
-  each val in comments
-    li
-      span= val.body 
-      span= " - " + val.written
-      //- if val.completed > 0
-      //-   span Completed
-      //- else
-      //-   span Not Completed
-      //- form(method='POST' action='/delete')
-      //-   input(type='hidden', name='id', value=val.id)
-      //-   button(type='submit') Delete
-
   
+  #comments-list.comments-container
+    each val in comments
+      .comment-item
+        span= val.body 
+        span= " - " + val.written
+     
+  button#load-more(type="button" style=hasMore ? '' : 'display: none;') Load More Comments
+
+  script.
+    let offset = !{comments.length};
+    const limit = 10;
+    const loadMoreBtn = document.getElementById('load-more');
+    const commentsList = document.getElementById('comments-list');
+
+    loadMoreBtn.addEventListener('click', function() {
+      fetch('/comments?limit=' + limit + '&offset=' + offset)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            console.error(data.error);
+            return;
+          }
+          data.comments.forEach(comment => {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            commentDiv.innerHTML = '<span>' + comment.body + '</span><span> - ' + comment.written + '</span>';
+            commentsList.appendChild(commentDiv);
+          });
+          offset += limit;
+          if (!data.hasMore) {
+            loadMoreBtn.style.display = 'none';
+          }
+        })
+        .catch(error => console.error('Error loading more comments:', error));
+    });

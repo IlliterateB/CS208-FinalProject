@@ -23,6 +23,15 @@ em {
   justify-content: center;
 }
 
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px 0;
+}
+
 header {
   background-color: #10291D;
   position: fixed;

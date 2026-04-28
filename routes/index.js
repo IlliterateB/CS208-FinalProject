@@ -15,12 +15,26 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next){
   try {
-    req.db.query('SELECT * FROM comments;', (err, results) => {
+    const limit = parseInt(req.query.limit) || 10; // Default to 10 if no limit is provided
+    const offset = parseInt(req.query.offset) || 0; // Default to 0 if no offset is provided
+    req.db.query('SELECT * FROM comments ORDER BY id DESC LIMIT ? OFFSET ?;', [limit, offset], (err, results) => {
       if (err) {
         console.error('Error fetching comments:', err);
         return res.status(500).send('Error fetching comments');
       }
-      res.render('index', { title: 'Downtown Donuts', comments: results });
+
+      // check how many comments exist in total to determine how to load comments on homepage
+      req.db.query('SELECT COUNT(*) AS count FROM comments;', (err, countResults) => {
+        if (err) {
+          console.error('Error counting comments:', err);
+          return res.status(500).send('Error counting comments');
+        }
+        const total = countResults[0].count;
+        const hasMore = offset + results.length < total; // Determine if there are more comments to load
+
+        // only render the limited amount of comments
+        res.render('index', { title: 'Downtown Donuts', comments: results, hasMore });
+      });
     });
   } catch (error) {
     console.error('Error fetching items:', error);
@@ -68,6 +82,37 @@ router.post('/submit-comment', function (req, res, next) {
     }
 });
 
+// New route for AJAX loading of comments (returns JSON)
+router.get('/comments', function(req, res, next) {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+    req.db.query('SELECT * FROM comments ORDER BY id DESC LIMIT ? OFFSET ?;', [limit, offset], (err, results) => {
+      if (err) {
+        console.error('Error fetching comments:', err);
+        return res.status(500).json({ error: 'Error fetching comments' });
+      }
+     
+      // Check if more comments exist
+      req.db.query('SELECT COUNT(*) AS total FROM comments;', (countErr, countResults) => {
+        if (countErr) {
+          console.error('Error counting comments:', countErr);
+          return res.status(500).json({ error: 'Error counting comments' });
+        }
+        const total = countResults[0].total;
+        const hasMore = offset + results.length < total;
+        res.json({ comments: results, hasMore });
+      });
+    });
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ error: 'Error fetching comments' });
+  }
+});
+
+
+module.exports = router;
+
 // router.post('/create', function (req, res, next) {
 //     const { task } = req.body;
 //     try {
@@ -104,4 +149,3 @@ router.post('/submit-comment', function (req, res, next) {
 //     }
 // });
 
-module.exports = router;
