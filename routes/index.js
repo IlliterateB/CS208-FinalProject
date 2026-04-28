@@ -40,7 +40,9 @@ router.get('/menu', function(req, res) {
 });
 
 // GET about page
-
+router.get('/about', function(req, res) {
+  res.render('about', { title: 'About Us' });
+});
 
 // GET order page
 
