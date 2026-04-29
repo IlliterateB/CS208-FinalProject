@@ -65,8 +65,12 @@ router.get('/order', function(req, res) {
 
 // POST create comment
 router.post('/submit-comment', function (req, res, next) {
-    const { comment } = req.body;
+    let comment = req.body.comment;
     try {
+      if (comment.length > 500) {
+        comment = comment.substring(0, 500); // Truncate comment to 500 characters
+      }
+      
       req.db.query('INSERT INTO comments (body) VALUES (?);', [comment], (err, results) => {
         if (err) {
           console.error('Error adding comment:', err);
