@@ -107,5 +107,52 @@ Confirm the deletion.
 Create a new Codespace from the same repository and try again!
 
 
-### Project ReadMe
+## Design Decisions
+
+1. Page Layout and Design
+    - Colored header and page colors / text font fit the given brand specifications. This includes the given dark green as the main color focus, with the seasalt as the page background, and the saffron accent at the bottom of the header. Dark green is also used for the button outlines.
+    - meta() in layout.pug and CSS @media specifications allow for things like the header, logos, and the menu page to scale according to the device, making it mobile-user friendly. (I do not own a tablet, so I can't specifically test that)
+    - Rounded corners on all edges, as well as a drop shadow behind the ordering logos allow for a more modern and comforting look.
+    - All logos including the Downtown Donuts and the delivery services count as valid links. The Downtown Donuts logo in the header leads to the home page, while the delivery service logos lead to their respective websites.
+
+2. Client and server validation for comments
+    - Validation is implemented both in browser JavaScript and in the Express `/submit-comment` endpoint. This ensures users get immediate feedback while keeping the backend safe from invalid or empty submissions.
+    - The client-side checks prevent whitespace-only comments and enforce the 500-character limit, while the server revalidates on submit for security.
+
+3. Incremental comment loading and UI feedback
+    - The comment list uses the `/comments` AJAX endpoint with `limit` and `offset` pagination, which keeps the page fast and avoids loading too many comments at once.
+    - The UI also handles user-friendly error messaging for network issues, failed loads, and double submission attempts.
+
+## Edge Cases
+
+- Server/API unreachable
+    - Comment submission now uses `fetch()` and catches network errors. If the server cannot be reached, the UI shows a friendly alert and preserves the submit button so the user can retry.
+- Whitespace-only comments
+    - The comment form validates input with `trim()` before submit and shows an drop down alert if the comment is empty or only whitespace.
+- Too-long input
+    - The textarea is limited with `maxlength="500"` and the client script trims excess characters automatically. The live character counter updates as the user types. This limit is also hard-capped in the SQL, using `body VARCHAR(500) NOT NULL`. 
+- Rapid double-clicks
+    - Once the form is submitted, the submit button is disabled and a flag prevents duplicate submissions until the request completes.
+
+## Challenges & Learnings
+
+1. Artificial Intelligence - Copilot Use
+    - As this class allows its use, I wanted to practice using Copilot to help my coding process. This led to some problems though as it would occassionally make stuff up, or do things in a very roundabout way, that I would then fix. When I asked it to explain and write some code for the edge-case handling, it completely broke all comment functionality. Luckily, I committed my prior changes right before so I could easily revert back to that point.
+
+2. Comment Section
+    - As this was much more SQL than we did in the class, it was difficult but nice to learn. I had many problems with this like accidentally deleting all comments from the command-line, or trying 20 different ways to format the timestamp.
+    - As Copilot didn't help much with the actual code on the double submitting comments edge-case, I just started it as my best guess to handle that, then had it fix some errors. 
+
+3. Page Transfer
+    - Since we didn't move pages much prior in this class, and it wasn't really mentioned extensively in the Zybooks, I didn't know how to do it at all. I first looked at the given code, and wrote the router.get functions to work how I thought it would.
+    - I also talked to the TA and she gave me some more specifics about how to move pages.
+
+## Citations
+
+1. Copilot
+    - It helped a lot with the CSS and JavaScript, as it was difficult to remember the specific syntax in both languages. I mostly tried to write the JavaScript myself, then if that didn't work I would then have it correct it.
+
+2. W3Schools - SQL - https://www.w3schools.com/sql
+    - I used this to dive deeper in the SQL use and to refresh myself.
+
 

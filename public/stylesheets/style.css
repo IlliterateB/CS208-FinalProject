@@ -109,6 +109,12 @@ header {
     width: 28vmin;
     height: calc(23vmin * 0.802);
   }
+
+  .menu-image {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+  }
 }
 
 /* Styling for comment section and error handling */
