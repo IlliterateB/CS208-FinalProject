@@ -110,3 +110,95 @@ header {
     height: calc(23vmin * 0.802);
   }
 }
+
+/* Styling for comment section and error handling */
+.comment-section {
+  width: 100%;
+  max-width: 600px;
+}
+
+#submit-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.char-count-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+#char-count {
+  font-size: 0.9em;
+  color: #666;
+  font-weight: 500;
+}
+
+#error-message {
+  padding: 12px 15px;
+  border-radius: 4px;
+  background-color: #ffebee;
+  color: #d32f2f;
+  border-left: 4px solid #d32f2f;
+  font-weight: 500;
+  font-size: 0.95em;
+  margin-top: 10px !important;
+}
+
+/* Button states for submit and load more */
+input[type="submit"]:disabled,
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+}
+
+input[type="submit"]:hover:not(:disabled),
+button:hover:not(:disabled) {
+  background-color: #e8e8e8;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#load-more-error {
+  color: #d32f2f;
+  margin-top: 10px;
+  padding: 10px 15px;
+  border-left: 4px solid #d32f2f;
+  background-color: #ffebee;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+#load-more-container {
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+}
+
+.comment-item {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.comment-item span:first-child {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.comment-item span:last-child {
+  font-size: 0.85em;
+  color: #999;
+}
+

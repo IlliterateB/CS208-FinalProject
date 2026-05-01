@@ -18,51 +18,104 @@ block content
 
   hr 
 
-  form#submit-comment(action="/submit-comment" method="POST")
-    label(for="user-comment") Leave a comment:
-    br
-    textarea#user-comment(
-      name="comment" 
-      rows="4" 
-      cols="50" 
-      placeholder="Type your thoughts here..." 
-      required
-    )
-    br
-    input(type="submit" value="Submit")
+  .comment-section
+    form#submit-comment(action="/submit-comment" method="POST")
+      label(for="user-comment") Leave a comment:
+      br
+      textarea#user-comment(
+        name="comment" 
+        rows="4" 
+        cols="50" 
+        maxlength="500"
+        placeholder="Type your thoughts here..." 
+        required
+      )
+      br
+      .char-count-wrapper
+        span#char-count(style="font-size: 0.9em; color: #666; margin-right: 10px;") 0/500
+      br
+      input(type="submit" value="Submit")
+      
+      // Error message display area
+      div#error-message(style="display: none; margin-top: 10px; padding: 10px; border-radius: 4px; background-color: #ffebee;")
   
+  h2 Comments
   #comments-list.comments-container
     each val in comments
       .comment-item
         span= val.body 
         span= " - " + val.written
      
-  button#load-more(type="button" style=hasMore ? '' : 'display: none;') Load More Comments
+  #load-more-container
+    button#load-more(type="button" style=hasMore ? '' : 'display: none;') Load More Comments
+    div#load-more-error(style="display: none; color: #d32f2f; margin-top: 10px;")
 
   script.
     let offset = !{comments.length};
-    const limit = 9; // Match the default limit used in the server route
+    const limit = 9; // same default limit used in the server route
     const loadMoreBtn = document.getElementById('load-more');
     const commentsList = document.getElementById('comments-list');
+    const loadMoreError = document.getElementById('load-more-error');
+    let isLoadingMore = false;
 
     loadMoreBtn.addEventListener('click', function() {
+      // Prevent multiple simultaneous requests
+      if (isLoadingMore) {
+        return;
+      }
+
+      isLoadingMore = true;
+      loadMoreBtn.disabled = true;
+      const originalText = loadMoreBtn.textContent;
+      loadMoreBtn.textContent = 'Loading...';
+      loadMoreError.style.display = 'none';
+
       fetch('/comments?limit=' + limit + '&offset=' + offset)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(data => {
           if (data.error) {
-            console.error(data.error);
-            return;
+            throw new Error(data.error);
           }
+          
+          // Clear any previous errors
+          loadMoreError.style.display = 'none';
+          
+          // Add comments to the list
           data.comments.forEach(comment => {
             const commentDiv = document.createElement('div');
             commentDiv.className = 'comment-item';
             commentDiv.innerHTML = '<span>' + comment.body + '</span><span> - ' + comment.written + '</span>';
             commentsList.appendChild(commentDiv);
           });
+          
           offset += limit;
+          
+          // Hide "Load More" button if no more comments
           if (!data.hasMore) {
             loadMoreBtn.style.display = 'none';
           }
         })
-        .catch(error => console.error('Error loading more comments:', error));
+        .catch(error => {
+          console.error('Error loading more comments:', error);
+          let errorMsg = 'Failed to load more comments. ';
+          
+          if (error instanceof TypeError) {
+            errorMsg += 'Unable to reach the server. Please check your internet connection and try again.';
+          } else {
+            errorMsg += error.message || 'An unexpected error occurred.';
+          }
+          
+          loadMoreError.textContent = errorMsg;
+          loadMoreError.style.display = 'block';
+        })
+        .finally(() => {
+          isLoadingMore = false;
+          loadMoreBtn.disabled = false;
+          loadMoreBtn.textContent = originalText;
+        });
     });
