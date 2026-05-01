@@ -1,0 +1,110 @@
+extends layout
+
+block content
+  h1 Comments
+  p Share your experience and read what others have said.
+
+  hr
+  .button-group
+    form(method='GET' action='/')
+        label(for='home') Go to Home Page:
+        button(type='submit')  Home
+    form(method='GET' action='/menu')
+      label(for='menu') View Menu:
+      button(type='submit')  Menu
+    form(method='GET' action='/about')
+      label(for='about') About Us:
+      button(type='submit') About
+    form(method='GET' action='/order')
+      label(for='order') Place an Order:
+      button(type='submit') Order
+
+
+  hr
+  .comment-section
+    form#submit-comment(action="/submit-comment" method="POST")
+      label(for="user-comment") Leave a comment:
+      br
+      textarea#user-comment(name="comment" rows="4" cols="50" maxlength="500" placeholder="Type your thoughts here..." required)
+      br
+      .char-count-wrapper
+        span#char-count(style="font-size: 0.9em; color: #666; margin-right: 10px;") 0/500
+      br
+      input(type="submit" value="Submit")
+      div#error-message(style="display: none; margin-top: 10px; padding: 10px; border-radius: 4px; background-color: #ffebee;")
+  
+  hr
+  #comments-list.comments-container
+    if comments && comments.length
+      each val in comments
+        .comment-item
+          span= val.body
+          span= " - " + val.written
+    else
+      p No comments have been posted yet.
+  
+  #load-more-container
+    button#load-more(type="button" style=hasMore ? '' : 'display: none;') Load More Comments
+    div#load-more-error(style="display: none; color: #d32f2f; margin-top: 10px;")
+  
+  script.
+    let offset = !{comments ? comments.length : 0};
+    const limit = 9;
+    const loadMoreBtn = document.getElementById('load-more');
+    const commentsList = document.getElementById('comments-list');
+    const loadMoreError = document.getElementById('load-more-error');
+    let isLoadingMore = false;
+
+    loadMoreBtn.addEventListener('click', function() {
+      if (isLoadingMore) {
+        return;
+      }
+
+      isLoadingMore = true;
+      loadMoreBtn.disabled = true;
+      const originalText = loadMoreBtn.textContent;
+      loadMoreBtn.textContent = 'Loading...';
+      loadMoreError.style.display = 'none';
+
+      fetch('/comments/data?limit=' + limit + '&offset=' + offset)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.error) {
+            throw new Error(data.error);
+          }
+
+          loadMoreError.style.display = 'none';
+          data.comments.forEach(comment => {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            commentDiv.innerHTML = '<span>' + comment.body + '</span><span> - ' + comment.written + '</span>';
+            commentsList.appendChild(commentDiv);
+          });
+
+          offset += limit;
+          if (!data.hasMore) {
+            loadMoreBtn.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error('Error loading more comments:', error);
+          let errorMsg = 'Failed to load more comments. ';
+          if (error instanceof TypeError) {
+            errorMsg += 'Unable to reach the server. Please check your internet connection and try again.';
+          } else {
+            errorMsg += error.message || 'An unexpected error occurred.';
+          }
+          loadMoreError.textContent = errorMsg;
+          loadMoreError.style.display = 'block';
+        })
+        .finally(() => {
+          isLoadingMore = false;
+          loadMoreBtn.disabled = false;
+          loadMoreBtn.textContent = originalText;
+        });
+    });

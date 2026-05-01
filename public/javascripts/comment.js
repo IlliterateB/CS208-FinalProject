@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return response.text();
     })
     .then(() => {
-      window.location.href = '/';
+      window.location.href = '/comments';
     })
     .catch(error => {
       let message = 'Unable to submit your comment. Please try again.';
